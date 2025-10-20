@@ -1,0 +1,28 @@
+@let isEmpty = demandPresenter.demandList().length === 0;
+
+<div class="flex justify-between align-items-center mb-10">
+  <div>
+    <h1 class="text-[#121926] text-left font-medium text-[20px] leading-[38px] font-poppins">Liste des demandes</h1>
+    <span>Gérer les demandes d'autorisation de travaux.</span>
+  </div>
+  @if (!isEmpty) {
+    <button type="button" matButton="filled" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+      ajouter
+    </button>
+  }
+</div>
+
+@if (demandPresenter.isLoading()) {
+  <mat-progress-bar class="my-4" mode="indeterminate"></mat-progress-bar>
+}
+
+<div class="flex flex-col gap-4">
+    @for (item of demandPresenter.demandList(); track item.id) {
+      <demand-card-component [demand]="item" (update)="openDialog(item)" (delete)="deleteDemand($event)"/>
+    }
+    @if (isEmpty) {
+      <empty-card-component (add)="openDialog()"/>
+    }
+
+</div>
